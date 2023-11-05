@@ -1,0 +1,148 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{chemfig}
+\usepackage{amsmath}
+
+\title{DSL Tutorial}
+\author{}
+
+
+
+\newcommand{\gerquot}[1]{\glqq#1\grqq}
+\newcommand{\dashAndSpace}{\textendash \space}
+\newcommand{\dashAndSpaceSeq}[1]{\dashAndSpace#1 \textendash}
+
+\newcommand{\DSL}{domain specific language}
+\newcommand{\CFG}{context-free grammar}
+\newcommand{\IUPAC}{International Union of Pure and Applied Chemistry}
+\newcommand{\captionVSpace}{\vspace*{-0.05cm}}
+
+%%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%                %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
+%%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% BEGIN document %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
+%%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%                %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
+\begin{document}
+
+\maketitle
+
+\section{Motivation}\label{s:Motivation}
+To understand technologies like DSLs (\DSL) examples are the best way to explain different aspects, e.g. use cases, typical problems, limitations, etc. Instead of creating an artificial example, in general a real world instance offers an more plain view to a technology.
+
+Because of this reason the IUPAC naming system as example was chosen. Maybe you already heard this name from the school in the chemistry subject. For those, who did not have any idea about this naming system or for people without any chemical background knowledge, don't worry; \emph{this tutorial focuses on the naming system itself} and has only low contact points to the chemical background.
+
+The goal is to make a tutorial, that explains the creation of CFG (\CFG) and illustrate the differences of abstract syntax and concrete syntax. We do not expect, that you are a expert in this topic; but a basic knowledge should be available. Terms like \gerquot{grammar} or \gerquot{production rule} will not be explained.
+
+
+
+\section{History of the IUPAC naming convention}\label{s:HistoryOfTheIUPACNamingConvention}
+At be beginning some history. IUPAC is an abbreviation for \gerquot{\IUPAC}. This union was founded in 1919 with the goal to simplify the global communication between chemists. Up to this year no global rules were available for naming chemical structures. Every country used his own system and this leaded to many misunderstandings; sometimes even in a single country. You can compare this situation like before the metric system was invented.
+
+The IUPAC invented a systematic way to create a unique name for \dashAndSpaceSeq{in theory} every chemical structure. In most cases the literature uses the term \gerquot{IUPAC name} or \gerquot{IUPAC nomenclature} for a name in the IUPAC convention. In this tutorial both of this terms will be also used.
+
+The rules of this naming convention can be formulated as \CFG. So it can be also understood as a kind of DSL. In the following sections basic rules of the naming convention will be introduced. And also the way to cast it to a \CFG.
+
+
+
+\section{Introduction to the IUPAC nomenclature}\label{s:IntroductionToTheIUPACNomenclature}
+Carbon (C) has the unique skill to create long structures with branches and nesting, that are stable \dashAndSpace in a chemical point of view. The possibilities are tremendous. Almost all other elements are not capable of creating larger structures. So the naming convention focuses on the carbon and the describing of that structures.
+
+\subsection{Nothing than straight chains}\label{ss:NothingThanStraightChains}
+In a simplified manner you can compare a carbon atom with a building block: The simplest way is a straight chain of carbon atoms without any branches. The IUPAC nomenclature encodes the length of such a straight chain in specific terms like \gerquot{Methan}, \gerquot{Ethan}, etc. See the table \ref{tab:NumCarbonEncodedName} below for a length up to 10 carbon atoms.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|l}
+        \toprule
+        \textbf{Number of carbon atoms} & \textbf{Encoded name} \\
+        \midrule
+        1 & Methan \\
+        2 & Ethan \\
+        3 & Propan \\
+        4 & Butan \\
+        5 & Pentan \\
+        6 & Hexan \\
+        7 & Heptan \\
+        8 & Octan \\
+        9 & Nonan \\
+        10 & Decan \\
+        \bottomrule
+    \end{tabular}
+    \captionVSpace
+    \caption{List of the first 10 names for a straight chain}
+    \label{tab:NumCarbonEncodedName}
+\end{table}
+
+\noindent For example: \\
+\emph{Ethan}\qquad \chemfig{C-C} \\
+or \\
+\emph{Hexan}\qquad \chemfig{C-C-C-C-C-C} \\
+
+In a sense of a grammar: This term for the straight chain is the main symbol. We call this symbol $c$ (for chain). $S$ is our mandatory start symbol and thus it is a nonterminal symbol. For this tutorial $T$ the set for terminal symbols; $N$ for nonterminal and $P$ for all production rules are used. In summary our first CFG grammar has the following definition:
+
+$$
+\begin{aligned}
+    T &=& \{c\} \\
+    N &=& \{S\} \\
+    P &:& \\
+    S &\rightarrow& c \\
+\end{aligned}
+$$
+
+\subsection{First order branches}
+A chain of carbon atoms can also contain branches. This branches could also be nested; for now we focus on branches without deeper nesting. To identify a branch we need the length of this branch and the position. The position will be formulated from the point of view of the main chain. The length of the branch will be encoded in terms. These terms are comparable with the terms for the main chain but with a postfix \gerquot{yl} instead of \gerquot{an}. This are the first 5 terms for the encoded branch length:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|l}
+        \toprule
+        \textbf{Number of carbon atoms in branch} & \textbf{Encoded name} \\
+        \midrule
+        1 & Methyl \\
+        2 & Ethyl \\
+        3 & Propyl \\
+        4 & Butyl \\
+        5 & Pentyl \\
+        ... & ... \\
+        \bottomrule
+    \end{tabular}
+    \captionVSpace
+    \caption{List of the first 5 names for a branch}
+    \label{tab:NumCarbonBranchEncodedName}
+\end{table}
+
+\noindent An example for this: \\
+\setchemfig{chemfig style={line width=1.5pt}}
+\chemfig{C-[,,,,blue]C(-[6,,,,orange]C)-[,,,,blue]C-[,,,,blue]C-[,,,,blue]C-[,,,,blue]C-[,,,,blue]C} \\
+The orange one is the branch with the length of one C atom. So the name is \emph{Methyl}. Any position information is written in front of the corresponding branch with a minus char between them. The full branch is therefore: \emph{2-Methyl}.
+
+So we can see, that a branch with the position information consists of three parts:
+\begin{itemize}
+\item Position $p$
+\item Minus sign $m$
+\item Term for the length of the branch $b$
+\end{itemize}
+Because every branch has this structure, we can introduce a nonterminal symbol to summarize all three terminals in this symbol $B$.
+
+What about the order of branches and main chain? The IUPAC convention defines, that the term for the main chain will be always at the end of the name. This is good for the CFG definition, because we don't need to add production rules for both orders. With this and the other new information we have now following grammar:
+
+$$
+\begin{aligned}
+    T &=& \{c, p, m, b\} \\
+    N &=& \{S, N\} \\
+    P &:& \\
+    S &\rightarrow& c \\
+    S &\rightarrow& Nc \\
+    N &\rightarrow& pmb \\
+\end{aligned}
+$$
+
+The whole name of the structure is: \emph{2-MethylHeptan}, because the main chain has a length of 7 carbon atoms.
+\end{document}
+%%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%              %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
+%%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% END document %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
+%%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%              %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
