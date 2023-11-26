@@ -10,6 +10,7 @@
 \usepackage{amsmath}
 \usepackage{xcolor}
 \usepackage{pxfonts}
+\usepackage{tikz}
 
 \title{DSL Tutorial}
 \author{}
@@ -260,11 +261,11 @@ The intuitive way is to assume, that a second branch with the new position will 
     \label{tab:BranchesWithTheSameLength}
 \end{table}
 
-In normal cases the prefix \gerquot{Mono} is not used. So in the name \emph{1-MethylHeptan} is no \gerquot{Mono} missing!
+In normal cases the prefix \gerquot{Mono} is not used. So in the name \emph{1-MethylHeptan} is no \gerquot{Mono} missing!\footnote{The nomenclature defines no specific rules for the usage. So for this tutorial \gerquot{Mono} will be not used.}
 
 To identify also the second brach, we need the position of them. All position information will be written before the branch term and the prefix to summarize branches with the same length before the correspondig branch term: \emph{2,3-DiMethylHeptan}. Usually the positions are sorted in ascending order. Between two numbers a comma is added to avoid ambiguous meanings if the positions larger than 9.
 
-To formulate this in a grammar we have the situation, that position numbers can occur multiple times on the same branch term. So at least one production rule for branches needs to create a non-terminal symbol. We can isolate the parts for the position information from the symbol $B \rightarrow pmb$ in a new symbol $C$. $p$ ans $m$ will be moved to $C$, so that $C$ is $C \rightarrow pm$. A second $C$, that creates itself, is necessary for multiple position information. This second $C$ could be: $C \rightarrow poC$ ($c$ represents here the comma char).
+To formulate this in a grammar we have the situation, that position numbers can occur multiple times on the same branch term. So at least one production rule for branches needs to create a non-terminal symbol. We can isolate the parts for the position information from the symbol $B \rightarrow pmb$ in a new symbol $C$. $p$ ans $m$ will be moved to $C$, so that $C$ is $C \rightarrow pm$. A second $C$, that creates itself, is necessary for multiple position information. This second $C$ could be: $C \rightarrow poC$ ($o$ represents here the comma char). \emph{Or in more simple words: we need to define production rules, they can create itself to make loops possible.}
 
 With the prefix, that summarizes multiple branches (we call it $d$), we have a similar situation like with $M$. This prefix $d$ is an optional symbol, so we need an additional production rule to achive this. An additional $B$ seems to be a good choice.
 
@@ -278,7 +279,7 @@ With the prefix, that summarizes multiple branches (we call it $d$), we have a s
             S &\rightarrow& M \\
             M &\rightarrow& Bc \\
             M &\rightarrow& c \\
-            {\color{\colorNew}M} &\rightarrow& {\color{\colorNew}C} \\
+            % {\color{\colorNew}M} &\rightarrow& {\color{\colorNew}C} \\
             {\color{\colorNew}B} &\rightarrow& {\color{\colorNew}C} \\
             {\color{\colorNew}C} &\rightarrow& {\color{\colorNew}pmb} \\
             {\color{\colorNew}C} &\rightarrow& {\color{\colorNew}poC} \\
@@ -350,9 +351,132 @@ S
     {\color{\colorBracketSecondNesting}{)}}
 {\color{\colorBracketFirstNesting}{)}}
 $
-It creates the word $\textbf{mdbc}$. A word with a minus char, a prefix like \gerquot{Tri}, a branch and the name for the main chain like \gerquot{Hexan}. E.g.: \emph{-TriMethylHexan}. Such a word makes no sense. So the grammer is too open. We describe more words than wanted. The reason for this is, that $C$ contains multiple different productions; only with sense, if there are used in a specific order. This is a hint for missing nonterminal symbols. A generic $C$ is also too simple.
+It creates the word $\textbf{mdbc}$. A word with a minus char, a prefix like \gerquot{Tri}, a branch and the name for the main chain like \gerquot{Hexan}. E.g.: \emph{-TriMethylHexan}. Such a word makes no sense. So the grammer is too open. We describe more words than wanted. The reason for this is, that $C$ contains multiple different productions; only with sense, if there are used in a specific order. This is a hint for missing nonterminal symbols. A generic $C$ is also too simple.\\
 
+\noindent One problem are the positon information. We have here two different scenarios:
+\begin{itemize}
+    \item One singe position with a minus sign; E.g. \emph{2-}
+    \item Multiple position information separated with a comma and with a minus sign at the end. E.g. \emph{2,3,4-}
+\end{itemize}
+We cannot gurantee with our current approach, that a summary prefix will be followed, if we have multiple position information. For example: \emph{2,3,4-Methyl...} is in our grammer although the summary prefix \emph{Tri} is missing. The reason is, that we here focused only on the position information and we have no way to influence the using of the summary prefix. The is an recurring problem with loops in a grammer when the number of used loops influence part of the words outside of the loop content. The figure \ref{fig:OldStyleMultiplePositions} shows the situation with the current $P$.
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.75cm]
+    \tikzstyle{in_out} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, very thick]%, fill=red!30]
+    \tikzstyle{rect} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{process} = [rectangle, rounded corners, minimum width=0.75cm, minimum height=0.75cm,text centered, draw=black, fill=gray!12.5]
+    \tikzstyle{intersection} = [rectangle, rounded corners, minimum width=4cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+
+    \node (InputP) [in_out, xshift=0cm] {P};
+
+    \node (InvIn) [coordinate, above of=InputP, xshift=0cm, yshift=-0cm, label=] {};
+    \node (InvOut) [coordinate, left of=InputP, xshift=-1cm, yshift=-0cm, label=] {};
+
+    \node (Inv1) [coordinate, below of=InputP, xshift=0cm, yshift=-0cm, label=] {};
+    \node (Inv2) [coordinate, right of=Inv1, xshift=0cm, yshift=-0cm, label=] {};
+    \node (Inv3) [coordinate, above of=Inv2, xshift=0cm, yshift=-0cm, label=] {};
+
+    % ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+    \draw [arrow] (InvIn) -- node[anchor=east] {} (InputP);
+
+    \draw (InputP) -- node[anchor=east] {} (Inv1);
+    \draw (Inv1) -- node[anchor=north] {pc} (Inv2);
+    \draw (Inv2) -- node[anchor=east] {} (Inv3);
+    \draw [arrow] (Inv3) -- node[anchor=east] {} (InputP);
+
+    \draw [arrow] (InputP) -- node[anchor=north] {pm / pmw} (InvOut);
+\end{tikzpicture}
+\caption{$P$ can produce itself. $pmw$ should only created, when at least one time $P$ created itself.}
+\label{fig:OldStyleMultiplePositions}
+\end{figure}
+
+$P$ can create correct words. But it cannot determine, whether at least one time $P$ created itself. So all words \dashAndSpaceSeq{with and without} summary prefix can be created. In a programming language we could use a flag or something similar. In a CFG this approach is not usable, because we don't have variables, that can be altered. The only possibility to solve this issue is to introduce a new nonterminal \dashAndSpace here called $P_2$. For the sake of completeness we rename $P$ to $P_1$.\\
+
+$P_2$ can only be reached, if at least one times $pc$ was produced. So the usage of the nonterminal $P_2$ itelf holds the information, that a summary prefix must be used. \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.75cm]
+    \tikzstyle{in_out} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, very thick]%, fill=red!30]
+    \tikzstyle{rect} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{process} = [rectangle, rounded corners, minimum width=0.75cm, minimum height=0.75cm,text centered, draw=black, fill=gray!12.5]
+    \tikzstyle{intersection} = [rectangle, rounded corners, minimum width=4cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+
+    \node (InputP1) [in_out, xshift=0cm] {$P_1$};
+    \node (InputP2) [in_out, xshift=-3cm] {$P_2$};
+
+    \node (InvIn) [coordinate, above of=InputP1, xshift=0cm, yshift=-0cm, label=] {};
+    \node (InvOut2) [coordinate, below of=InputP2, xshift=0cm, yshift=-0cm, label=] {};
+    \node (InvOut1) [coordinate, below of=InputP1, xshift=0cm, yshift=-0cm, label=] {};
+
+    \node (Inv1) [coordinate, above of=InputP2, xshift=0cm, yshift=-0cm, label=] {};
+    \node (Inv2) [coordinate, left of=Inv1, xshift=0cm, yshift=-0cm, label=] {};
+    \node (Inv3) [coordinate, below of=Inv2, xshift=0cm, yshift=-0cm, label=] {};
+
+    % ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+    \draw [arrow] (InvIn) -- node[anchor=east] {} (InputP1);
+    \draw [arrow] (InputP1) -- node[anchor=east] {pm} (InvOut1);
+
+    % P1 -> P2
+    \draw [arrow] (InputP1) -- node[anchor=south] {pc} (InputP2);
+
+    \draw (InputP2) -- node[anchor=east] {} (Inv1);
+    \draw (Inv1) -- node[anchor=south] {pc} (Inv2);
+    \draw (Inv2) -- node[anchor=east] {} (Inv3);
+    \draw [arrow] (Inv3) -- node[anchor=east] {} (InputP2);
+    \draw [arrow] (InputP2) -- node[anchor=east] {pmw} (InvOut2);
+\end{tikzpicture}
+\caption{Modified $P$. The usage of $P_2$ gurantees, that at least one times $pm$ was created.}
+\label{fig:NewStyleMultiplePositions}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{minipage}[l]{\CFGDefinitionSize\textwidth}
+        $$
+        \begin{aligned}
+            T &=& \{c, p, m, b, o, d\} \\
+            N &=& \{S, M, {\color{\colorNew}P_1, P_2}\} \\
+            P &:& \\
+            S &\rightarrow& M \\
+            M &\rightarrow& {\color{\colorNew}P_1}c \\
+            M &\rightarrow& c \\
+            % {\color{\colorNew}M} &\rightarrow& {\color{\colorNew}C} \\
+            {\color{\colorNew}P_1} &\rightarrow& {\color{\colorNew}pmb} \\
+            {\color{\colorNew}P_1} &\rightarrow& {\color{\colorNew}poP_2} \\
+            {\color{\colorNew}P_2} &\rightarrow& {\color{\colorNew}poP_2} \\
+            {\color{\colorNew}P_2} &\rightarrow& {\color{\colorNew}pmdb} \\
+        \end{aligned}
+        $$
+        \caption{Adjusted CFG with $P_1$ and $P_2$.}
+        \label{fig:CFGWithMultipleBranchesAtTheSameLengthNewApproach}
+    \end{minipage}
+    \begin{minipage}[r]{\SymbolDescriptionTable\textwidth}
+        \begin{table}[H]
+        \centering
+            \begin{tabular}{c|l}
+                \toprule
+                \textbf{Symbol} & \textbf{Description} \\
+                \midrule
+                c & Main chain \\
+                p & position \\
+                m & minus char \\
+                b & branch \\
+                o & comma char \\
+                d & summary prefix \\
+                \bottomrule
+            \end{tabular}
+            %\captionVSpace
+            %\caption{Descriptions of the terminal symbols}
+        \end{table}
+    \end{minipage}
+\end{figure}
+
+We see, that our grammar uses now complete new production rules. One noticeable change are the production rules $P_1$ and $P_2$ with the same result $poP_2$. This is an usual way to define loops in a CFG.
 
 \end{document}
 %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%              %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
