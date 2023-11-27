@@ -395,7 +395,7 @@ We cannot gurantee with our current approach, that a summary prefix will be foll
 
 $P$ can create correct words. But it cannot determine, whether at least one time $P$ created itself. So all words \dashAndSpaceSeq{with and without} summary prefix can be created. In a programming language we could use a flag or something similar. In a CFG this approach is not usable, because we don't have variables, that can be altered. The only possibility to solve this issue is to introduce a new nonterminal \dashAndSpace here called $P_2$. For the sake of completeness we rename $P$ to $P_1$.\\
 
-$P_2$ can only be reached, if at least one times $pc$ was produced. So the usage of the nonterminal $P_2$ itelf holds the information, that a summary prefix must be used. \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
+$P_2$ can only be reached, if at least one times $pc$ was produced. So the usage of the nonterminal $P_2$ itself holds the information, that a summary prefix must be used. Figure \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
 
 \begin{figure}[H]
 \centering
@@ -476,7 +476,32 @@ $P_2$ can only be reached, if at least one times $pc$ was produced. So the usage
     \end{minipage}
 \end{figure}
 
-We see, that our grammar uses now complete new production rules. One noticeable change are the production rules $P_1$ and $P_2$ with the same result $poP_2$. This is an usual way to define loops in a CFG.
+We see, that our grammar uses now complete new production rules. One noticeable change are the production rules $P_1$ and $P_2$ with the same result $poP_2$. This is an usual way to define loops in a CFG. With the altered CFG, the production of \emph{2,3-DiMethylHeptan} is also modified:
+$
+S
+{\color{\colorBracketFirstNesting}{(}}
+    M
+    {\color{\colorBracketSecondNesting}{(}}
+        P_1
+        {\color{\colorBracketThirdNesting}{(}}
+            po,
+            P_2
+            {\color{\colorBracketFourthNesting}{(}}
+                pmdb
+            {\color{\colorBracketFourthNesting}{)}}
+        {\color{\colorBracketThirdNesting}{)}}
+        , c
+    {\color{\colorBracketSecondNesting}{)}}
+{\color{\colorBracketFirstNesting}{)}}
+$.
+
+
+
+\section{Abstract- and Concrete Syntax Trees}\label{s:AbstractAndConcreteSyntaxTrees}
+In the section \ref{s:IntroductionToTheIUPACNomenclature} we used the tupel description of the CFG. In the tupel description every detail of the language is defined. And the production even of a simple word contains multiple nested parentheses. Already with a few production rules, the grammer becomes complex to handle and especially to debug (see chapter \ref{ss:MultipleFirstOrderBranches}).
+
+% For this reason the syntax tree was invented. This is a more graphical way to describe a grammer. And the abstract syntax tree foucuses on the structural details instead of describing the whole formal language.
+
 
 \end{document}
 %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%              %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
