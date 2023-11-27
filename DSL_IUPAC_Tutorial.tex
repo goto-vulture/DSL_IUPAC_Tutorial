@@ -383,7 +383,7 @@ We cannot gurantee with our current approach, that a summary prefix will be foll
     \draw [arrow] (InvIn) -- node[anchor=east] {} (InputP);
 
     \draw (InputP) -- node[anchor=east] {} (Inv1);
-    \draw (Inv1) -- node[anchor=north] {pc} (Inv2);
+    \draw (Inv1) -- node[anchor=north] {po} (Inv2);
     \draw (Inv2) -- node[anchor=east] {} (Inv3);
     \draw [arrow] (Inv3) -- node[anchor=east] {} (InputP);
 
@@ -395,7 +395,7 @@ We cannot gurantee with our current approach, that a summary prefix will be foll
 
 $P$ can create correct words. But it cannot determine, whether at least one time $P$ created itself. So all words \dashAndSpaceSeq{with and without} summary prefix can be created. In a programming language we could use a flag or something similar. In a CFG this approach is not usable, because we don't have variables, that can be altered. The only possibility to solve this issue is to introduce a new nonterminal \dashAndSpace here called $P_2$. For the sake of completeness we rename $P$ to $P_1$.\\
 
-$P_2$ can only be reached, if at least one times $pc$ was produced. So the usage of the nonterminal $P_2$ itself holds the information, that a summary prefix must be used. Figure \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
+$P_2$ can only be reached, if at least one times $po$ was produced. So the usage of the nonterminal $P_2$ itself holds the information, that a summary prefix must be used. Figure \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
 
 \begin{figure}[H]
 \centering
@@ -423,15 +423,15 @@ $P_2$ can only be reached, if at least one times $pc$ was produced. So the usage
     \draw [arrow] (InputP1) -- node[anchor=east] {pm} (InvOut1);
 
     % P1 -> P2
-    \draw [arrow] (InputP1) -- node[anchor=south] {pc} (InputP2);
+    \draw [arrow] (InputP1) -- node[anchor=south] {po} (InputP2);
 
     \draw (InputP2) -- node[anchor=east] {} (Inv1);
-    \draw (Inv1) -- node[anchor=south] {pc} (Inv2);
+    \draw (Inv1) -- node[anchor=south] {po} (Inv2);
     \draw (Inv2) -- node[anchor=east] {} (Inv3);
     \draw [arrow] (Inv3) -- node[anchor=east] {} (InputP2);
     \draw [arrow] (InputP2) -- node[anchor=east] {pmw} (InvOut2);
 \end{tikzpicture}
-\caption{Modified $P$. The usage of $P_2$ gurantees, that at least one times $pm$ was created.}
+\caption{Modified $P$. The usage of $P_2$ gurantees, that at least one times $po$ was created.}
 \label{fig:NewStyleMultiplePositions}
 \end{figure}
 
