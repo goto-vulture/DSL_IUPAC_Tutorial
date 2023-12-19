@@ -42,6 +42,7 @@
 \newcommand{\colorNew}{orange}
 \newcommand{\colorMainChain}{blue}
 \newcommand{\colorBranchFirstNesting}{orange}
+\newcommand{\colorBranchSecondNesting}{cyan}
 
 %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%                %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
 %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% BEGIN document %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
@@ -59,6 +60,8 @@ The goal is to make a tutorial, that explains the creation of CFG (\CFG) and ill
 
 
 
+
+
 \section{History of the IUPAC naming convention}\label{s:HistoryOfTheIUPACNamingConvention}
 At be beginning some history. IUPAC is an abbreviation for \emph{\IUPAC}. This union was founded in 1919 with the goal to simplify the global communication between chemists. Up to this year no global rules were available for naming chemical structures. Every country used his own system and this leaded to many misunderstandings; sometimes even in a single country. You can compare this situation like before the metric system was invented.
 
@@ -68,8 +71,12 @@ The rules of this naming convention can be formulated as \CFG. So it can be also
 
 
 
+
+
 \section{Introduction to the IUPAC nomenclature}\label{s:IntroductionToTheIUPACNomenclature}
 Carbon (C) has the unique skill to create long structures with branches and nesting, that are stable \dashAndSpace in a chemical point of view. The possibilities are tremendous. Almost all other elements are not capable of creating larger structures. So the naming convention focuses on the carbon and the describing of that structures.
+
+
 
 \subsection{Nothing than straight chains}\label{ss:NothingThanStraightChains}
 In a simplified manner you can compare a carbon atom with a building block: The simplest way is a straight chain of carbon atoms without any branches. The IUPAC nomenclature encodes the length of such a straight chain in specific terms like \gerquot{Methan}, \gerquot{Ethan}, etc. See the table \ref{tab:NumCarbonEncodedName} below for a length up to 10 carbon atoms.
@@ -136,6 +143,7 @@ In a sense of a grammar: This term for the straight chain is the main symbol. We
         \end{table}
     \end{minipage}
 \end{figure}
+
 
 
 \subsection{First order branches}\label{ss:FirstOrderBranches}
@@ -230,6 +238,8 @@ S
     {\color{\colorBracketSecondNesting}{)}}
 {\color{\colorBracketFirstNesting}{)}}
 $}
+
+
 
 \subsection{Multiple first order branches}\label{ss:MultipleFirstOrderBranches}
 No one can forbid the carbon atoms to create multiple branches of the same length. Let add an another branch of the length one at the third position:
@@ -387,13 +397,13 @@ We cannot gurantee with our current approach, that a summary prefix will be foll
     \draw (Inv2) -- node[anchor=east] {} (Inv3);
     \draw [arrow] (Inv3) -- node[anchor=east] {} (InputP);
 
-    \draw [arrow] (InputP) -- node[anchor=north] {pm / pmw} (InvOut);
+    \draw [arrow] (InputP) -- node[anchor=north] {pmb/pmdb} (InvOut);
 \end{tikzpicture}
-\caption{$P$ can produce itself. $pmw$ should only created, when at least one time $P$ created itself.}
+\caption{$P$ can produce itself. $pmd$ should only created, when at least one time $P$ created itself.}
 \label{fig:OldStyleMultiplePositions}
 \end{figure}
 
-$P$ can create correct words. But it cannot determine, whether at least one time $P$ created itself. So all words \dashAndSpaceSeq{with and without} summary prefix can be created. In a programming language we could use a flag or something similar. In a CFG this approach is not usable, because we don't have variables, that can be altered. The only possibility to solve this issue is to introduce a new nonterminal \dashAndSpace here called $P_2$. For the sake of completeness we rename $P$ to $P_1$.\\
+$P$ can create correct words. But it cannot determine, whether at least one time $P$ created itself. So all words \dashAndSpaceSeq{with and without} summary prefix can be created. In a programming language we could use a flag or something similar to distinguish this two cases. In a CFG this approach is not usable, because we don't have variables, that can be altered. The only possibility to solve this issue is to introduce a new nonterminal \dashAndSpace here called $P_2$. For the sake of completeness we rename $P$ to $P_1$.\\
 
 $P_2$ can only be reached, if at least one times $po$ was produced. So the usage of the nonterminal $P_2$ itself holds the information, that a summary prefix must be used. Figure \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
 
@@ -420,7 +430,7 @@ $P_2$ can only be reached, if at least one times $po$ was produced. So the usage
     % ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
     \draw [arrow] (InvIn) -- node[anchor=east] {} (InputP1);
-    \draw [arrow] (InputP1) -- node[anchor=east] {pm} (InvOut1);
+    \draw [arrow] (InputP1) -- node[anchor=east] {pmb} (InvOut1);
 
     % P1 -> P2
     \draw [arrow] (InputP1) -- node[anchor=south] {po} (InputP2);
@@ -429,7 +439,7 @@ $P_2$ can only be reached, if at least one times $po$ was produced. So the usage
     \draw (Inv1) -- node[anchor=south] {po} (Inv2);
     \draw (Inv2) -- node[anchor=east] {} (Inv3);
     \draw [arrow] (Inv3) -- node[anchor=east] {} (InputP2);
-    \draw [arrow] (InputP2) -- node[anchor=east] {pmw} (InvOut2);
+    \draw [arrow] (InputP2) -- node[anchor=east] {pmdb} (InvOut2);
 \end{tikzpicture}
 \caption{Modified $P$. The usage of $P_2$ gurantees, that at least one times $po$ was created.}
 \label{fig:NewStyleMultiplePositions}
@@ -476,7 +486,7 @@ $P_2$ can only be reached, if at least one times $po$ was produced. So the usage
     \end{minipage}
 \end{figure}
 
-We see, that our grammar uses now complete new production rules. One noticeable change are the production rules $P_1$ and $P_2$ with the same result $poP_2$. This is an usual way to define loops in a CFG. With the altered CFG, the production of \emph{2,3-DiMethylHeptan} is also modified:
+We see, that our grammar uses now complete new production rules. One noticeable change are the production rules $P_1$ and $P_2$ with the same result $poP_2$. This is an usual way to define loops in a CFG. With the altered CFG, the production of the valid word \emph{2,3-DiMethylHeptan} is also modified:
 $
 S
 {\color{\colorBracketFirstNesting}{(}}
@@ -497,10 +507,61 @@ $.
 
 
 
-\section{Abstract- and Concrete Syntax Trees}\label{s:AbstractAndConcreteSyntaxTrees}
-In the section \ref{s:IntroductionToTheIUPACNomenclature} we used the tupel description of the CFG. In the tupel description every detail of the language is defined. And the production even of a simple word contains multiple nested parentheses. Already with a few production rules, the grammer becomes complex to handle and especially to debug (see chapter \ref{ss:MultipleFirstOrderBranches}).
+\subsection{Second order branches}\label{ss:SecondOrderBranches}
+In the chapter \ref{ss:FirstOrderBranches} and \ref{ss:MultipleFirstOrderBranches} first order branches are used. There are also so called \gerquot{second order branches}. This is are nested branch, that is connected to a first order branch. Maybe the question can occur, how many nesting steps are possible. The nomenclature itself defines no limit\footnote{In normal cases chemicals with a deeper nesting than second order branches are not stable. So the usage in real life gives a limit.}. Figure \ref{fig:FourthExample} is an easy example for a second order branch.
 
-% For this reason the syntax tree was invented. This is a more graphical way to describe a grammer. And the abstract syntax tree foucuses on the structural details instead of describing the whole formal language.
+\begin{figure}[H]
+    \centering
+    \setchemfig{chemfig style={line width=\connectionThicknessDefault}}
+    \chemfig{C-[,,,,\colorMainChain]C-[,,,,\colorMainChain]C-[,,,,\colorMainChain]C
+    (-[6,,,,\colorBranchFirstNesting]C(-[0,,,,\colorBranchSecondNesting]C)-[6,,,,\colorBranchFirstNesting]C)
+    -[,,,,\colorMainChain]C-[,,,,\colorMainChain]C-[,,,,\colorMainChain]C} \\
+    \caption{Example of a second order branch. The cyan connection is the second order branch.}
+    \label{fig:FourthExample}
+\end{figure}
+
+The last chapters explained how to handle a first order branch. Here: It has a length of two carbon atoms ($\rightarrow$ \emph{Ethyl}) on the fourth position $\rightarrow$ \emph{4-Ethyl}. But how the IUPAC nomenclature handles nestings? A nesting is encapsulated in parentheses. The position of the nested branch is determined by the connection to the branch with the upper order (here \emph{1}). And the length is described with the common rule for branches. The position of the upper order branch will be written before the opening parentheses to make clear on which upper branch the nesting is connected to. The solution for the branch in our example makes it more understandable: \emph{4-(1-Methyl)EthylHeptan}.
+
+In words: On a main chain with the length 7 \dashAndSpace there is a first order branch at the fourth position with the length 2. And on this branch is on the first position a nested branch with the length 1.
+
+The current CFG is not designed to describe nestings. So we need to alter it. At the begin two new terminal symbols for the parentheses: $x$ for the \texttt{\textbf{(}} and $y$ for \texttt{\textbf{)}}. The part with the most difficulties is the number of nestings. We need to close every parentheses and we are not allowed to have more closing parentheses than opening. An usual way to achieve this is a nonterminal, that creates the opening and the closing symbol \dashAndSpace without any intermediate steps. E.g.: A{\color{red}{x}}B{\color{red}{y}}C With this rule there are always the same number of opening and closing parentheses.\\
+
+
+\noindent...
+
+
+
+\section{Abstract- and Concrete Syntax Trees}\label{s:AbstractAndConcreteSyntaxTrees}
+In the section \ref{s:IntroductionToTheIUPACNomenclature} we used the tupel description of the CFG. In this description type every detail of the language is defined. And the production even of a simple word contains multiple nested parentheses. Also to mention is the missing possibility to give the Terminal- and Non-Terminalsymbols more expressive names instead of exact one char.\footnote{The tupel description is a mathamatical way to describe a grammar.} Already with a few production rules, the grammer becomes complex to handle and especially to debug (see chapter \ref{ss:MultipleFirstOrderBranches}).
+
+For this reason the syntax tree was invented. This is a more graphical way to describe a production rule of a word in a specifc grammer. The abstract syntax tree foucuses on the structural details instead of describing the whole language with every intermediate step in a formal manner. The CFG from figure \ref{fig:CFGWithMultipleBranchesAtTheSameLengthNewApproach} with the \emph{2,3-DiMethylHeptan} could be represented shown in figure \ref{fig:AbstractSyntaxTreeFirstExample}.
+
+In figure the main structure of the production \ref{fig:AbstractSyntaxTreeFirstExample} is immediately noticeable. For example, that \gerquot{Pos. 2} creates the position, the summary prefix \emph{and} the branch. This is not an error \dashAndSpace it is here a design choice.
+
+\newcommand{\colorASTNode}{blue!15}
+\newcommand{\colorASTNodeAtTheEnd}{green!40}
+\begin{figure}[H]
+\centering
+% Main structure code from: https://texample.net/tikz/examples/tree/
+\begin{tikzpicture}
+    [sibling distance=16em,
+    every node/.style = {shape=rectangle,
+    % draw,
+    align=center,
+    top color=\colorASTNode, bottom color=\colorASTNode}]
+    \node {IUPAC name}
+    child { node {First order branch}
+        child { node {Position 1}
+            child { node[top color=\colorASTNodeAtTheEnd, bottom color=\colorASTNodeAtTheEnd] {\textbf{2,}} } }
+        child { node {Position 2 with length}
+            child { node[top color=\colorASTNodeAtTheEnd, bottom color=\colorASTNodeAtTheEnd] {\textbf{3-DiMethyl}} } } }
+    child { node {Main chain}
+        child { node[top color=\colorASTNodeAtTheEnd, bottom color=\colorASTNodeAtTheEnd] {\textbf{Heptan}} } };
+\end{tikzpicture}
+\caption{Abstract syntax tree of the word \emph{2,3-DiMethylHeptan}.}
+\label{fig:AbstractSyntaxTreeFirstExample}
+\end{figure}
+
 
 
 \end{document}
