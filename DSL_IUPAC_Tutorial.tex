@@ -44,6 +44,9 @@
 \newcommand{\colorBranchFirstNesting}{orange}
 \newcommand{\colorBranchSecondNesting}{cyan}
 
+% Replacements for specific words, that can be written in multiple ways
+\newcommand{\nonterminal}{non terminal}
+
 %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%                %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
 %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% BEGIN document %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
 %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%                %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%% %%%%%
@@ -113,7 +116,7 @@ or \\
 \setchemfig{chemfig style={line width=\connectionThicknessDefault}}
 \chemfig{C-C-C-C-C-C} \\
 
-In a sense of a grammar: This term for the straight chain is the main symbol. We call this symbol $c$ (for chain). $S$ is our mandatory start symbol and thus it is a nonterminal symbol. For this tutorial $T$ the set for terminal symbols; $N$ for nonterminal and $P$ for all production rules are used. In summary our first CFG grammar has the following definition:
+In a sense of a grammar: This term for the straight chain is the main symbol. We call this symbol $c$ (for chain). $S$ is our mandatory start symbol and thus it is a \nonterminal symbol. For this tutorial $T$ the set for terminal symbols; $N$ for \nonterminal and $P$ for all production rules are used. In summary our first CFG grammar has the following definition:
 
 \begin{figure}[H]
     \begin{minipage}[l]{\CFGDefinitionSize\textwidth}
@@ -184,7 +187,7 @@ So we can see, that a branch with the position information consists of three par
     \item Minus sign $m$
     \item Term for the length of the branch $b$
 \end{itemize}
-Because every branch has this structure, we can introduce a nonterminal symbol to summarize all three terminals in this symbol $B$.
+Because every branch has this structure, we can introduce a \nonterminal symbol to summarize all three terminals in this symbol $B$.
 
 What about the order of branches and main chain? The IUPAC convention defines, that the term for the main chain will be always at the end of the name. This is good for the CFG definition, because we don't need to add production rules for both orders. With this and the other new information we have now following grammar (new elements are highlighted):
 
@@ -223,7 +226,7 @@ What about the order of branches and main chain? The IUPAC convention defines, t
     \end{minipage}
 \end{figure}
 
-It is important to notice, that an additional nonterminal ($M$) was added. Because a grammar can only contains exact one start variable, we need $M$ as \gerquot{middle variable} to make words with and without branches possible. In summary: the $B$ is \dashAndSpaceSeq{like a branch} an optional nonterminal.
+It is important to notice, that an additional \nonterminal ($M$) was added. Because a grammar can only contains exact one start variable, we need $M$ as \gerquot{middle variable} to make words with and without branches possible. In summary: the $B$ is \dashAndSpaceSeq{like a branch} an optional \\nonterminal.
 The whole name of the structure in figure \ref{fig:SecondExample} is: \emph{2-MethylHeptan}\footnote{It can produced with
 $
 S
@@ -273,11 +276,11 @@ The intuitive way is to assume, that a second branch with the new position will 
 
 In normal cases the prefix \gerquot{Mono} is not used. So in the name \emph{1-MethylHeptan} is no \gerquot{Mono} missing!\footnote{The nomenclature defines no specific rules for the usage. So for this tutorial \gerquot{Mono} will be not used.}
 
-To identify also the second brach, we need the position of them. All position information will be written before the branch term and the prefix to summarize branches with the same length before the correspondig branch term: \emph{2,3-DiMethylHeptan}. Usually the positions are sorted in ascending order. Between two numbers a comma is added to avoid ambiguous meanings if the positions larger than 9.
+To identify also the second branch, we need the position of them. All position information will be written before the branch term and the prefix to summarize branches with the same length before the corresponding branch term: \emph{2,3-DiMethylHeptan}. Usually the positions are sorted in ascending order. Between two numbers a comma is added to avoid ambiguous meanings if the positions larger than 9.
 
 To formulate this in a grammar we have the situation, that position numbers can occur multiple times on the same branch term. So at least one production rule for branches needs to create a non-terminal symbol. We can isolate the parts for the position information from the symbol $B \rightarrow pmb$ in a new symbol $C$. $p$ ans $m$ will be moved to $C$, so that $C$ is $C \rightarrow pm$. A second $C$, that creates itself, is necessary for multiple position information. This second $C$ could be: $C \rightarrow poC$ ($o$ represents here the comma char). \emph{Or in more simple words: we need to define production rules, they can create itself to make loops possible.}
 
-With the prefix, that summarizes multiple branches (we call it $d$), we have a similar situation like with $M$. This prefix $d$ is an optional symbol, so we need an additional production rule to achive this. An additional $B$ seems to be a good choice.
+With the prefix, that summarizes multiple branches (we call it $d$), we have a similar situation like with $M$. This prefix $d$ is an optional symbol, so we need an additional production rule to achieve this. An additional $B$ seems to be a good choice.
 
 \begin{figure}[H]
     \begin{minipage}[l]{\CFGDefinitionSize\textwidth}
@@ -361,14 +364,14 @@ S
     {\color{\colorBracketSecondNesting}{)}}
 {\color{\colorBracketFirstNesting}{)}}
 $
-It creates the word $\textbf{mdbc}$. A word with a minus char, a prefix like \gerquot{Tri}, a branch and the name for the main chain like \gerquot{Hexan}. E.g.: \emph{-TriMethylHexan}. Such a word makes no sense. So the grammer is too open. We describe more words than wanted. The reason for this is, that $C$ contains multiple different productions; only with sense, if there are used in a specific order. This is a hint for missing nonterminal symbols. A generic $C$ is also too simple.\\
+It creates the word $\textbf{mdbc}$. A word with a minus char, a prefix like \gerquot{Tri}, a branch and the name for the main chain like \gerquot{Hexan}. E.g.: \emph{-TriMethylHexan}. Such a word makes no sense. So the grammar is too open. We describe more words than wanted. The reason for this is, that $C$ contains multiple different productions; only with sense, if there are used in a specific order. This is a hint for missing \nonterminal symbols. A generic $C$ is also too simple.\\
 
-\noindent One problem are the positon information. We have here two different scenarios:
+\noindent One problem are the position information. We have here two different scenarios:
 \begin{itemize}
     \item One singe position with a minus sign; E.g. \emph{2-}
     \item Multiple position information separated with a comma and with a minus sign at the end. E.g. \emph{2,3,4-}
 \end{itemize}
-We cannot gurantee with our current approach, that a summary prefix will be followed, if we have multiple position information. For example: \emph{2,3,4-Methyl...} is in our grammer although the summary prefix \emph{Tri} is missing. The reason is, that we here focused only on the position information and we have no way to influence the using of the summary prefix. The is an recurring problem with loops in a grammer when the number of used loops influence part of the words outside of the loop content. The figure \ref{fig:OldStyleMultiplePositions} shows the situation with the current $P$.
+We cannot guarantee with our current approach, that a summary prefix will be followed, if we have multiple position information. For example: \emph{2,3,4-Methyl...} is in our grammar although the summary prefix \emph{Tri} is missing. The reason is, that we here focused only on the position information and we have no way to influence the using of the summary prefix. The is an recurring problem with loops in a grammar when the number of used loops influence part of the words outside of the loop content. The figure \ref{fig:OldStyleMultiplePositions} shows the situation with the current $P$.
 
 \begin{figure}[H]
 \centering
@@ -403,9 +406,9 @@ We cannot gurantee with our current approach, that a summary prefix will be foll
 \label{fig:OldStyleMultiplePositions}
 \end{figure}
 
-$P$ can create correct words. But it cannot determine, whether at least one time $P$ created itself. So all words \dashAndSpaceSeq{with and without} summary prefix can be created. In a programming language we could use a flag or something similar to distinguish this two cases. In a CFG this approach is not usable, because we don't have variables, that can be altered. The only possibility to solve this issue is to introduce a new nonterminal \dashAndSpace here called $P_2$. For the sake of completeness we rename $P$ to $P_1$.\\
+$P$ can create correct words. But it cannot determine, whether at least one time $P$ created itself. So all words \dashAndSpaceSeq{with and without} summary prefix can be created. In a programming language we could use a flag or something similar to distinguish this two cases. In a CFG this approach is not usable, because we don't have variables, that can be altered. The only possibility to solve this issue is to introduce a new \nonterminal \dashAndSpace here called $P_2$. For the sake of completeness we rename $P$ to $P_1$.\\
 
-$P_2$ can only be reached, if at least one times $po$ was produced. So the usage of the nonterminal $P_2$ itself holds the information, that a summary prefix must be used. Figure \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
+$P_2$ can only be reached, if at least one times $po$ was produced. So the usage of the \nonterminal $P_2$ itself holds the information, that a summary prefix must be used. Figure \ref{fig:NewStyleMultiplePositions} shows the modified visualization of $P$.
 
 \begin{figure}[H]
 \centering
@@ -524,7 +527,7 @@ The last chapters explained how to handle a first order branch. Here: It has a l
 
 In words: On a main chain with the length 7 \dashAndSpace there is a first order branch at the fourth position with the length 2. And on this branch is on the first position a nested branch with the length 1.
 
-The current CFG is not designed to describe nestings. So we need to alter it. At the begin two new terminal symbols for the parentheses: $x$ for the \texttt{\textbf{(}} and $y$ for \texttt{\textbf{)}}. The part with the most difficulties is the number of nestings. We need to close every parentheses and we are not allowed to have more closing parentheses than opening. An usual way to achieve this is a nonterminal, that creates the opening and the closing symbol \dashAndSpace without any intermediate steps. E.g.: A{\color{red}{x}}B{\color{red}{y}}C With this rule there are always the same number of opening and closing parentheses.\\
+The current CFG is not designed to describe nestings. So we need to alter it. At the begin two new terminal symbols for the parentheses: $x$ for the \texttt{\textbf{(}} and $y$ for \texttt{\textbf{)}}. The part with the most difficulties is the number of nestings. We need to close every parentheses and we are not allowed to have more closing parentheses than opening. An usual way to achieve this is a \nonterminal, that creates the opening and the closing symbol \dashAndSpace without any intermediate steps. E.g.: A{\color{red}{x}}B{\color{red}{y}}C With this rule there are always the same number of opening and closing parentheses.\\
 
 
 \noindent...
@@ -532,9 +535,9 @@ The current CFG is not designed to describe nestings. So we need to alter it. At
 
 
 \section{Abstract- and Concrete Syntax Trees}\label{s:AbstractAndConcreteSyntaxTrees}
-In the section \ref{s:IntroductionToTheIUPACNomenclature} we used the tupel description of the CFG. In this description type every detail of the language is defined. And the production even of a simple word contains multiple nested parentheses. Also to mention is the missing possibility to give the Terminal- and Non-Terminalsymbols more expressive names instead of exact one char.\footnote{The tupel description is a mathamatical way to describe a grammar.} Already with a few production rules, the grammer becomes complex to handle and especially to debug (see chapter \ref{ss:MultipleFirstOrderBranches}).
+In the section \ref{s:IntroductionToTheIUPACNomenclature} we used the tuple description of the CFG. In this description type every detail of the language is defined. And the production even of a simple word contains multiple nested parentheses. Also to mention is the missing possibility to give the Terminal- and Non-Terminalsymbols more expressive names instead of exact one char.\footnote{The tuple description is a mathematical way to describe a grammar.} Already with a few production rules, the grammar becomes complex to handle and especially to debug (see chapter \ref{ss:MultipleFirstOrderBranches}).
 
-For this reason the syntax tree was invented. This is a more graphical way to describe a production rule of a word in a specifc grammer. The abstract syntax tree foucuses on the structural details instead of describing the whole language with every intermediate step in a formal manner. The CFG from figure \ref{fig:CFGWithMultipleBranchesAtTheSameLengthNewApproach} with the \emph{2,3-DiMethylHeptan} could be represented shown in figure \ref{fig:AbstractSyntaxTreeFirstExample}.
+For this reason the syntax tree was invented. This is a more graphical way to describe a production rule of a word in a specific grammar. The abstract syntax tree focuses on the structural details instead of describing the whole language with every intermediate step in a formal manner. The CFG from figure \ref{fig:CFGWithMultipleBranchesAtTheSameLengthNewApproach} with the \emph{2,3-DiMethylHeptan} could be represented shown in figure \ref{fig:AbstractSyntaxTreeFirstExample}.
 
 In figure the main structure of the production \ref{fig:AbstractSyntaxTreeFirstExample} is immediately noticeable. For example, that \gerquot{Pos. 2} creates the position, the summary prefix \emph{and} the branch. This is not an error \dashAndSpace it is here a design choice.
 
