@@ -1,0 +1,197 @@
+% ver. 0.23 (baseline in the smdp current year repo) (versioning
+% synchronized with mdd-slides.sty)
+
+\RequirePackage{tikz}
+\usetikzlibrary{
+	arrows, arrows.meta, automata, calc, decorations.markings, fit, backgrounds, mindmap, positioning,
+	shadows, shapes, shapes.geometric, shadows.blur, through, tikzmark, petri
+}
+
+\newcommand{\mddopacity}{0.340}
+
+% Define box and box title style
+\tikzstyle{defbox} = [fill=Memories,fill opacity=\mddopacity,
+								anchor=north west,inner sep=2ex,inner
+								ysep=2.1ex,text opacity=1,overlay,
+								outer sep=0]
+\tikzstyle{MemoriesGlass} = [defbox]
+\tikzstyle{MemoriesGlass} = [defbox]
+\tikzstyle{Framed} = [draw=Memories,thin]
+\tikzstyle{RomanticPaleYellowGlass} = [defbox,fill=RomanticPaleYellow]
+\tikzstyle{SugarLoveGlass} = [defbox,fill=SugarLove]
+\tikzstyle{WhiteGlass} = [defbox,fill=white]
+\tikzstyle{DarkGreenGrayGlass} = [defbox,fill=DarkGreenGray]
+\tikzstyle{LightLightGreenGlass} = [defbox,fill=LightLightGreen]
+\tikzstyle{TransparentGlass} = [defbox,opacity=0]
+\tikzstyle{SimpleGlass} = [TransparentGlass,inner sep=0,outer sep=0]
+
+
+\tikzstyle{WhitePlaque} =
+	[RomanticPaleYellowGlass,fill=white,opacity=1,blur shadow,
+	 ultra thin,draw=Memories]
+\tikzstyle{LightLightGreenPlaque} = [WhitePlaque,fill=LightLightGreen]
+\tikzstyle{RomanticPaleYellowPlaque} = [WhitePlaque,fill=RomanticPaleYellow]
+\tikzstyle{MemoriesPlaque} = [WhitePlaque,fill=Memories]
+
+
+\tikzstyle{fancytitle} = [overlay,fill=DarkGreenGray,text=white,
+		inner sep=0.5ex,
+		shift={(2ex,-0.3ex)},font=\footnotesize,anchor=west,drop
+		shadow={opacity=\mddopacity,shadow xshift=.17ex,shadow yshift=-.17ex}]
+\tikzstyle{SugarLoveTitle} = [fancytitle,fill=SugarLove,text=black]
+\tikzstyle{DarkGreenGrayTitle} = [fancytitle]
+
+\tikzstyle{ExampleLabel} = [overlay,fill=SugarLove,anchor=north west,
+	text=black,opacity=1,inner sep=0.4ex,
+	font=\scriptsize,text=black,rotate=80]
+\tikzstyle{RomanticPaleYellowLabel} = [ExampleLabel,fill=RomanticPaleYellow,
+	opacity=1,rotate=-80,text opacity=1,draw=SugarLove,ultra thin]
+\tikzstyle{SugarLoveGlassLabel} =
+[ExampleLabel,fill=SugarLove,opacity=\mddopacity,rotate=-80,text opacity=1]
+
+\tikzstyle{MemoriesLabel} =
+[ExampleLabel,fill=Memories,opacity=1,rotate=-80,text opacity=1,draw=DarkGreenGray,ultra thin]
+\tikzstyle{DarkGreenGrayLabel} = [
+	overlay,
+	anchor=north west,
+	fill=DarkGreenGray,
+	opacity=1,
+	text opacity=1,
+	text=white,
+	font=\scriptsize,
+	minimum height=\baselineskip,
+	drop shadow={opacity=\mddopacity,shadow xshift=.17ex,shadow yshift=-.17ex},
+	outer sep=.2em,
+	inner sep=.4ex
+]
+\tikzstyle{SugarLoveLabel} = [DarkGreenGrayLabel, fill=SugarLove]
+\tikzstyle{DarkGreenGrayGlassLabel} = [ExampleLabel,fill=DarkGreenGray,opacity=\mddopacity,text opacity=1,rotate=-80]
+
+
+\tikzstyle{DarkGreenGrayLine} = [thick,densely dotted,draw=DarkGreenGray,overlay]
+\tikzstyle{DarkGreenGrayLabelConnector} = [DarkGreenGrayLine]
+\tikzstyle{SugarLoveLabelConnector} = [thin,densely dotted,draw=black,overlay]
+\tikzstyle{RomanticPaleYellowLabelConnector} = [SugarLoveLabelConnector]
+\tikzstyle{SugarLoveLine} = [DarkGreenGrayLine,draw=SugarLove]
+
+% object diagrams
+
+\tikzset{
+	object/.style={
+		draw,
+		rectangle,
+		fill=LightLightGreen,
+		font=\footnotesize\sffamily,
+		inner sep=1ex,
+		outer sep=0ex,
+		drop shadow,
+		text width=30mm,
+		minimum height=15mm,
+		draw=DarkGreenGray,ultra thin
+}}
+
+\tikzstyle{object diagram} = [
+	node distance=10mm,
+	font=\footnotesize\sffamily,->,thick,initial text={}
+]
+
+
+% class diagrams
+
+\tikzstyle{class}  = [
+		draw,
+		rectangle,
+		fill=Memories,
+		font=\footnotesize\sffamily,
+		inner sep=1ex,
+		outer sep=0ex,
+		drop shadow,
+		minimum width=30mm,
+		minimum height=10mm,
+		draw=DarkGreenGray,ultra thin
+]
+
+\tikzstyle{class diagram} = [
+	node distance=10mm,
+	font=\footnotesize\sffamily,->,thick,initial text={}
+]
+
+\tikzstyle{black diamond} = [
+	rectangle,
+	inner sep=1.1mm,
+	fill,
+	black,
+	rotate=45
+]
+
+\tikzstyle{generalization}=[->, >=open triangle 90, thick]
+
+% feature diagrams
+
+\tikzstyle{feature diagram} = [
+	node distance=7mm,
+	ultra thin,
+	outer sep=0mm,
+	font=\footnotesize\sffamily,
+]
+
+% would be nice to include the label in this style
+\tikzstyle{requires} = [
+	decoration={markings,mark=at position 1 with {\arrow[scale=2]{>}}},
+   postaction={decorate}
+]
+\tikzstyle{requiredby} = [
+	decoration={markings,mark=at position 0.01 with {\arrow[scale=2]{<}}},
+   postaction={decorate},
+]
+\tikzstyle{excludes} = [
+	decoration={markings,mark=at position 1 with {\arrow[scale=2]{>}}},
+   postaction={decorate}
+]
+\tikzstyle{excludedby} = [
+	decoration={markings,mark=at position 0.1 with {\arrow[scale=2]{<}}},
+   postaction={decorate}
+]
+
+
+\tikzstyle{feature} = [
+	draw=black,
+	text width={},
+	minimum height=0pt,
+	thick,
+	fill = white,%Memories!34,
+	drop shadow,
+	anchor=north
+]
+
+\tikzstyle{optional circle} = [circle,inner sep=.3ex,white,draw=black,fill=white,thick]
+
+\tikzstyle{mandatory circle} = [optional circle, fill=black]
+
+% it would be better to change it to some kind of path, then
+% it looks more DSL like
+
+\newcommand{\xorGroup}[3]{\draw let
+		\p0 = (#1.south),
+      \p1 = (#2.north),
+      \p2 = (#3.north),
+      \n1 = {atan2(\y1 - \y0, \x1 - \x0)},
+      \n2 = {atan2(\y2 - \y0, \x2 - \x0)},
+		\n3 = {3.3mm}
+    in (\p0) -- +(\n1:\n3) arc [radius = \n3, start angle = \n1, end angle = \n2]}
+
+\newcommand{\orGroup}[3]{\fill let
+		\p0 = (#1.south),
+      \p1 = (#2.north),
+      \p2 = (#3.north),
+      \n1 = {atan2(\y1 - \y0, \x1 - \x0)},
+      \n2 = {atan2(\y2 - \y0, \x2 - \x0)},
+		\n3 = {3.3mm}
+    in (\p0) -- +(\n1:\n3) arc [radius = \n3, start angle = \n1, end angle = \n2]}
+%	 \fill p0 -- +(\n1:\n3) -- +(\n2:\n3)}
+    %
+% Annotated euqations
+
+% Commands for Highlighting text -- non tikz method
+\newcommand{\highlight}[2]{\colorbox{#1}{\ensuremath{\displaystyle #2}}}
+\newcommand{\highlightdark}[2]{\colorbox{#1}{\ensuremath{\displaystyle #2}}}

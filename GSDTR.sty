@@ -1,0 +1,214 @@
+%% This is file `GSDTR.sty'. 
+
+% Version History
+% 1.1 Make the font of "GSDLAB TECHNICAL REPORT" smaller so that google won't treat it as title.
+% 1.0 Initial version
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{GSDTR}[2011/05/11 v1.1]
+\message{GSD-TR style 2011/05/11 v1.1 by Yingfei (adapted from GRACE-TR.sty created by Zhenjiang Hu and Kiminori Matsuzaki)}
+\ProcessOptions\relax
+
+\usepackage{graphicx}
+
+%% Cover
+\def\GSDTRtitle#1{\gdef\@GSDTR@title{#1}}
+\def\GSDTRauthor#1{\gdef\@GSDTR@author{#1}}
+\def\GSDTRdate#1{\gdef\@GSDTR@date{#1}}
+\def\GSDTRid#1{\gdef\@GSDTR@id{#1}}
+\def\GSDTRcommunicatedBy#1{\gdef\@GSD@communicated{#1}}
+\def\@GSD@date{\today}
+\def\@GSD@title{Please Set GSDTRtitle}
+\def\@GSD@author{Please Set GSDTRauthor}
+\def\@GSD@id{Please Set GSDTRid}
+
+\def\GSDTRmakecover{%
+\bgroup%
+  % save original dimension
+  \newdimen\dimen@orgtextheight
+  \dimen@orgtextheight=\textheight
+  % set layout for title pages
+  \setlength{\parindent}     { 0pt}
+  \setlength{\voffset}       {-1in}        % ... this is not recommended
+  \setlength{\topmargin}     { 0pt}
+  \setlength{\headheight}    { 0pt}
+  \setlength{\headsep}       { 0pt}
+  \setlength{\footskip}      { 0pt}
+  \setlength{\textheight}    {\paperheight}
+  \setlength{\hoffset}       {-1in}             % ... this is not recommended
+  \setlength{\evensidemargin}{ 0pt}
+  \setlength{\oddsidemargin} { -2cm}
+  \setlength{\textwidth}     {\paperwidth}
+  \setlength{\marginparsep}  { 0pt}
+  \setlength{\marginparwidth}{ 0pt}
+  % set font size for title pages
+  \def\sizeHEADER      {\@setfontsize{\HEADER}      {\@xipt} {12}}
+  \def\sizeTITLE       {\@setfontsize{\TITLE}       {\@xviipt}{20}}
+  \def\sizeAUTHOR      {\@setfontsize{\AUTHOR}      {\@xivpt} {16}}
+  \def\sizeCOMMUNICATED{\@setfontsize{\COMMUNICATED}{\@xiipt} {14}}
+  \def\sizeDATE        {\@setfontsize{\DATE}        {\@xiipt} {14}}
+  \def\sizeORGANIZATION{\@setfontsize{\ORGANIZATION}{\@xipt}  {13}}
+  \def\sizeURL         {\@setfontsize{\URL}         {\@xipt}  {12}}
+  \def\sizeCOPYRIGHT   {\@setfontsize{\COPYRIGHT}   {\@xipt}  {14}}
+  % definition of boxes
+  % header
+  \newbox\HEADERbox\setbox\HEADERbox=%
+      \vtop{\hsize=14cm\sffamily\sizeHEADER\begin{center}%
+      BOOK APPENDIX%
+      \end{center}}
+  % title
+  \newbox\TITLEbox\setbox\TITLEbox=%
+      \vtop{\hsize=14cm\bfseries\sizeTITLE%
+      \begin{center}\@GSDTR@title\end{center}}
+  % author
+  \newbox\AUTHORbox\setbox\AUTHORbox=%
+      \vtop{\hsize=12cm\begin{center}%
+      \sizeAUTHOR\@GSDTR@author%
+      \@ifundefined{@GSDTR@communicated}%
+         {}%
+         {\\\vspace{10pt}\sizeCOMMUNICATED%
+          (Communicated by \@GSDTR@communicated)}%
+      \end{center}}
+  % number and date
+  \newbox\DATEbox\setbox\DATEbox=%
+      \vtop{\hsize=100mm
+      \parfillskip=0pt\noindent\sizeDATE\@GSDTR@id\hfill\@GSDTR@date\par}
+
+
+% book reference
+  \newbox\NOTEbox\setbox\NOTEbox=%
+      \vtop{\hsize=130mm
+      \parfillskip=0pt%\noindent\sizeDATE\@GSDTR@id\hfill\@GSDTR@date\par
+\begin{flushleft}
+%\medskip
+{
+  %\vspace{+3mm}
+	\includegraphics[width=2.5cm]{dslbook-cover.pdf}
+  \hfill
+  \begin{minipage}[H]{.96\linewidth}\parskip=.4\baselineskip
+	\vspace{-5.3cm}
+	Andrzej W\k{a}sowski and Thorsten Berger. \textit{Domain-specific Languages: Effective Modeling, Automation, and Reuse}. Springer Nature. 2023.
+	
+	\bigskip
+	
+	{\sffamily
+	Book website: ~~~http://dsl.design\\
+	Suppl. material: https://bitbucket.org/dsldesign/dsldesign
+	}
+	\end{minipage}
+	\\}
+\end{flushleft}
+}
+
+  	
+	% organization and url
+  \newbox\ORGANIZATIONbox\setbox\ORGANIZATIONbox=%
+      \vtop{\hsize=200mm\begin{center}%
+	{\sffamily \sizeORGANIZATION
+	\textsuperscript{1}IT University of Copenhagen, Denmark\\
+	\textsuperscript{2}Ruhr University Bochum, Germany\\
+	%\vspace{10mm}}
+        %{\sffamily\bfseries \sizeURL
+				%\begin{minipage}[H]{10cm}
+        %Book website: ~~~http://dsl.design\\
+				%Suppl. material: https://bitbucket.org/dsldesign/dsldesign
+				%\end{minipage}
+	}
+      \end{center}}
+  % copyright
+  \newbox\COPYRIGHTbox\setbox\COPYRIGHTbox=%
+      \vtop{\hsize=140mm\sffamily\sizeCOPYRIGHT
+
+\smallskip
+
+      The GSDLAB technical reports are published as a means to ensure timely
+      dissemination of scholarly and technical work on a non-commercial
+      basis. Copyright and all rights therein are maintained by the authors
+      or by other copyright holders, notwithstanding that they have offered
+      their works here electronically. It is understood that all persons
+      copying this information will adhere to the terms and constraints
+      invoked by each author's copyright. These works may not be reposted
+      without the explicit permission of the copyright holder.}
+  % some important lengths
+  % length between leftside and center
+  \newdimen\dimen@covercenter
+      \dimen@covercenter=105mm
+  % length between top and header (fixed point)
+  \newdimen\dimen@coverheader 
+      \dimen@coverheader=30mm
+  % length between header and title (fixed point)
+  \newdimen\dimen@covertitle  
+      \dimen@covertitle=60mm
+      \advance\dimen@covertitle  -\dimen@coverheader
+      \advance\dimen@covertitle  -\ht\HEADERbox
+      \advance\dimen@covertitle  -\dp\HEADERbox
+  % length between title and author, between author and date (fixed length)
+  \newdimen\dimen@coverauthor
+      \dimen@coverauthor=5mm
+  \newdimen\dimen@coverdate
+      \dimen@coverdate=13mm
+	\newdimen\dimen@bookref
+      \dimen@bookref=50mm
+ % length between date and logo
+  \newdimen\dimen@logo
+      \dimen@logo=35mm
+  % length between date and organization (fixed point)
+  \newdimen\dimen@organization 
+      \dimen@organization=135mm
+      \advance\dimen@organization  -\dimen@coverheader
+      \advance\dimen@organization  -\ht\HEADERbox
+      \advance\dimen@organization  -\dp\HEADERbox
+      \advance\dimen@organization  -\dimen@covertitle
+      \advance\dimen@organization  -\ht\TITLEbox
+      \advance\dimen@organization  -\dp\TITLEbox
+      \advance\dimen@organization  -\dimen@coverauthor
+      \advance\dimen@organization  -\ht\AUTHORbox
+      \advance\dimen@organization  -\dp\AUTHORbox
+      \advance\dimen@organization  -\dimen@coverdate
+      \advance\dimen@organization  -\ht\DATEbox
+      \advance\dimen@organization  -\dp\DATEbox
+  % length between top and copyright (fixed point)
+  \newdimen\dimen@copyright
+      \dimen@copyright=190mm
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % title page
+  \thispagestyle{empty}
+  \vbox{\hsize=\textwidth
+  \vspace*{\dimen@coverheader}
+      \hspace*\dimen@covercenter\hspace*{-.5\wd\HEADERbox}\box\HEADERbox\par
+  \vspace*{\dimen@covertitle}
+      \hspace*\dimen@covercenter\hspace*{-.5\wd\TITLEbox}\box\TITLEbox\par
+  \vspace*{\dimen@coverauthor}
+      \hspace*\dimen@covercenter\hspace*{-.5\wd\AUTHORbox}\box\AUTHORbox\par
+  \vspace*{\dimen@coverdate}
+      \hspace*\dimen@covercenter\hspace*{-.5\wd\DATEbox}\box\DATEbox\par
+
+\vspace*{\dimen@bookref}
+      \hspace*\dimen@covercenter\hspace*{-.5\wd\NOTEbox}\box\NOTEbox\par
+
+%\vspace{-.5cm}
+%
+  %\vspace*{\dimen@logo}
+      %\centerline{\includegraphics[height=2.5cm]{gsdlogo}\hspace{1cm}\raisebox{0.5cm}{\includegraphics[height=2cm]{uwlogo}}}
+
+\vspace{-2cm}
+
+  \vspace*{\dimen@organization}
+      \hspace*\dimen@covercenter\hspace*{-.5\wd\ORGANIZATIONbox}\box\ORGANIZATIONbox\par
+  }\vspace*{-\textheight}\vfill % this is needed for the 1st page
+  
+	%\clearpage
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %% Copyright Page
+  %\thispagestyle{empty}
+  %\vbox{\hsize=\textwidth
+  %\vspace*{\dimen@copyright}
+      %\hspace*\dimen@covercenter\hspace*{-.5\wd\COPYRIGHTbox}\box\COPYRIGHTbox
+  %}
+  % set \textheight before clearpage for main paper
+  \setlength{\textheight}{\dimen@orgtextheight} 
+  \clearpage%
+  \setcounter{page}{1}%
+\egroup%
+}
+%% End of file
